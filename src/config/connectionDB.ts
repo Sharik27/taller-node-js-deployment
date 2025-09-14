@@ -25,6 +25,22 @@ export const db = mongoose.connect(connectionString, { dbName: 'restaurant-db'})
 
         } else {
             console.log(`Admin already exists with ${adminEmail}`);
-        }    
+        }   
+        
+        const userEmail = "user@example.com";
+        let user = await UserModel.findOne({ email: userEmail });
+        if (!user) {
+            user = await UserModel.create({
+                name: "Camila",
+                email: userEmail,
+                password: await bcrypt.hash("Camila123", 10),
+                roles: [UserRole.USER],
+            });
+        
+            console.log("User:", (user._id as mongoose.Types.ObjectId).toString());
+
+        } else {
+            console.log(`User already exists with ${userEmail}`);
+        }
     })
     .catch((error) => console.error(error));
